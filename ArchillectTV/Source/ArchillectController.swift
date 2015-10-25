@@ -31,7 +31,7 @@ class ArchillectController {
     init()
     {
         let config = NSURLSessionConfiguration.defaultSessionConfiguration()
-        config.timeoutIntervalForRequest = 0.0
+        config.timeoutIntervalForRequest = 25.0
         
         _urlSession = NSURLSession(configuration: config)
         _retryCount = 0
@@ -167,6 +167,7 @@ class ArchillectController {
                         self._beginPollingForUpdates()
                     } else {
                         print("Reporting update failure")
+                        self._retryCount = 0
                         self.delegate?.archillectControllerDidFailToLoad(self, error: error!)
                     }
                 }
