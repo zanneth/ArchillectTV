@@ -42,13 +42,13 @@ class ArchillectController {
         if (_serverSession == nil) {
             _fetchNewSession({ (session: ArchillectSession?, error: NSError?) -> Void in
                 if (session != nil) {
-                    print("Began session: \(session)")
+                    NSLog("Began session: \(session)")
                     self._serverSession = session
                     self.delegate?.archillectControllerDidConnect(self)
                     
                     self._beginPollingForUpdates()
                 } else {
-                    print("Connection error: \(error)")
+                    NSLog("Connection error: \(error)")
                     self.delegate?.archillectControllerDidFailToLoad(self, error: error!)
                 }
             })
@@ -154,7 +154,7 @@ class ArchillectController {
                 
                 self._beginPollingForUpdates()
             } else {
-                print("Error fetching update: \(error)")
+                NSLog("Error fetching update: \(error)")
                 
                 let archillectError = ArchillectErrorCode(rawValue: error!.code)!
                 if (archillectError == .InvalidSession) {
@@ -163,10 +163,10 @@ class ArchillectController {
                     self.connect()
                 } else {
                     if (self._retryCount < ArchillectController.maxRetryCount) {
-                        print("Retrying...")
+                        NSLog("Retrying...")
                         self._beginPollingForUpdates()
                     } else {
-                        print("Reporting update failure")
+                        NSLog("Reporting update failure")
                         self._retryCount = 0
                         self.delegate?.archillectControllerDidFailToLoad(self, error: error!)
                     }

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0C144ABF1BDD8B8D00FA3943 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ABE1BDD8B8D00FA3943 /* UIImage+animatedGIF.m */; };
+		0C144AC61BDDA2DF00FA3943 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C144AC41BDDA2DF00FA3943 /* Montserrat-Bold.ttf */; };
+		0C144AC71BDDA2DF00FA3943 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C144AC51BDDA2DF00FA3943 /* Montserrat-Regular.ttf */; };
+		0C144AC91BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C144AC81BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf */; };
 		0C944A671BDC969B00486907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C944A661BDC969B00486907 /* Assets.xcassets */; };
 		0CE71D021BDD6111002077C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71CFF1BDD6111002077C1 /* AppDelegate.swift */; };
 		0CE71D031BDD6111002077C1 /* ArchillectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D001BDD6111002077C1 /* ArchillectController.swift */; };
@@ -22,6 +25,9 @@
 		0C144ABC1BDD8B8C00FA3943 /* ArchillectTV-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArchillectTV-Bridging-Header.h"; sourceTree = "<group>"; };
 		0C144ABD1BDD8B8D00FA3943 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		0C144ABE1BDD8B8D00FA3943 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		0C144AC41BDDA2DF00FA3943 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		0C144AC51BDDA2DF00FA3943 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		0C144AC81BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceCodePro-Regular.ttf"; sourceTree = "<group>"; };
 		0C944A5C1BDC969B00486907 /* archillect.tv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = archillect.tv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C944A661BDC969B00486907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C944A681BDC969B00486907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,6 +105,9 @@
 			isa = PBXGroup;
 			children = (
 				0C944A661BDC969B00486907 /* Assets.xcassets */,
+				0C144AC41BDDA2DF00FA3943 /* Montserrat-Bold.ttf */,
+				0C144AC51BDDA2DF00FA3943 /* Montserrat-Regular.ttf */,
+				0C144AC81BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf */,
 				0C944A681BDC969B00486907 /* Info.plist */,
 			);
 			name = Resources;
@@ -161,6 +170,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C144AC71BDDA2DF00FA3943 /* Montserrat-Regular.ttf in Resources */,
+				0C144AC91BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf in Resources */,
+				0C144AC61BDDA2DF00FA3943 /* Montserrat-Bold.ttf in Resources */,
 				0C944A671BDC969B00486907 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

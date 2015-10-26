@@ -9,19 +9,35 @@ import UIKit
 
 class ViewController: UIViewController, ArchillectControllerDelegate {
     private var _archillectController:  ArchillectController = ArchillectController()
+    private var _urlSession:            NSURLSession?
+    
     private var _backgroundImageView:   UIImageView = UIImageView()
     private var _foregroundImageView:   UIImageView = UIImageView()
-    private var _urlSession:            NSURLSession?
+    private var _archillectLabel:       UILabel = UILabel()
+    private var _indexLabel:            UILabel = UILabel()
+    
+    private static let kChromePadding: CGFloat = 50.0
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.blackColor()
         
         _backgroundImageView.contentMode = .ScaleAspectFill
         self.view.addSubview(_backgroundImageView)
         
         _foregroundImageView.contentMode = .ScaleAspectFit
         self.view.addSubview(_foregroundImageView)
+        
+        _archillectLabel.text = "ARCHILLECT"
+        _archillectLabel.textColor = UIColor.whiteColor()
+        _archillectLabel.font = UIFont(name: "Montserrat-Bold", size: 26.0)
+        self.view.addSubview(_archillectLabel)
+        
+        _indexLabel.textColor = UIColor.whiteColor()
+        _indexLabel.font = UIFont(name: "SourceCodePro-Regular", size: 18.0)
+        self.view.addSubview(_indexLabel)
         
         _urlSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
         
@@ -54,6 +70,24 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         let bounds = self.view.bounds
         _backgroundImageView.frame = bounds
         _foregroundImageView.frame = bounds
+        
+        let archillectLabelSize = _archillectLabel.sizeThatFits(bounds.size)
+        let archillectLabelFrame = CGRect(
+            x: ViewController.kChromePadding,
+            y: bounds.size.height - ViewController.kChromePadding - archillectLabelSize.height,
+            width: archillectLabelSize.width,
+            height: archillectLabelSize.height
+        )
+        _archillectLabel.frame = archillectLabelFrame
+        
+        let indexLabelSize = _indexLabel.sizeThatFits(bounds.size)
+        let indexLabelFrame = CGRect(
+            x: CGRectGetMaxX(archillectLabelFrame) + 10.0,
+            y: rint(archillectLabelFrame.origin.y + archillectLabelSize.height / 2.0 - indexLabelSize.height / 2.0),
+            width: indexLabelSize.width,
+            height: indexLabelSize.height
+        )
+        _indexLabel.frame = indexLabelFrame
     }
     
     // MARK: ArchillectControllerDelegate
@@ -65,7 +99,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     
     func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError)
     {
-        print("Failed to load: \(error)")
+        NSLog("Failed to load: \(error)")
     }
     
     // MARK: Internal
@@ -78,9 +112,11 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
                     let image = UIImage.animatedImageWithAnimatedGIFData(imageData!)
                     self._backgroundImageView.image = image
                     self._foregroundImageView.image = image
+                    self._indexLabel.text = "#\(asset.index)"
+                    self.view.setNeedsLayout()
                 })
             } else {
-                print("Error loading asset \(asset). \(error)")
+                NSLog("Error loading asset \(asset). \(error)")
             }
         })
         loadTask?.resume()
