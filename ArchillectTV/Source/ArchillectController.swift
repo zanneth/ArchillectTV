@@ -41,15 +41,19 @@ class ArchillectController {
     {
         if (_serverSession == nil) {
             _fetchNewSession({ (session: ArchillectSession?, error: NSError?) -> Void in
-                if (session != nil) {
+                if (session != nil && session!.isValid()) {
                     NSLog("Began session: \(session)")
                     self._serverSession = session
                     self.delegate?.archillectControllerDidConnect(self)
                     
                     self._beginPollingForUpdates()
-                } else {
+                } else if (error != nil) {
                     NSLog("Connection error: \(error)")
                     self.delegate?.archillectControllerDidFailToLoad(self, error: error!)
+                } else {
+                    NSLog("Session invalid. (\(session))")
+                    let clientError = NSError.archillectError(.InvalidSession)
+                    self.delegate?.archillectControllerDidFailToLoad(self, error: clientError)
                 }
             })
         }
@@ -207,6 +211,11 @@ internal struct ArchillectSession {
                 self.pingTimeout = pingTimeout.doubleValue
             }
         }
+    }
+    
+    func isValid() -> Bool
+    {
+        return (self.sessionID.characters.count > 0)
     }
 }
 

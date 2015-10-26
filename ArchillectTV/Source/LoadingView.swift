@@ -22,7 +22,7 @@ class LoadingView: UIView {
         super.init(frame: frame)
         
         let segmentsWidth: CGFloat = 20.0
-        let ringsColor = UIColor.lightGrayColor()
+        let ringsColor = UIColor.whiteColor()
         
         let outerPattern = KSIMutableRingPattern(color: ringsColor, segmentLength: π/2.0, segmentsCount: 2)
         outerPattern.segmentIntervalRadians = π

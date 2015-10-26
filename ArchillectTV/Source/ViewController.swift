@@ -106,7 +106,10 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError)
     {
         NSLog("Failed to load: \(error)")
-        _setErrorScreenVisible(true)
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self._setErrorScreenVisible(true)
+        })
     }
     
     // MARK: Internal
