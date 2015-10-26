@@ -12,6 +12,8 @@
 		0C144AC71BDDA2DF00FA3943 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C144AC51BDDA2DF00FA3943 /* Montserrat-Regular.ttf */; };
 		0C144AC91BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C144AC81BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf */; };
 		0C144ACB1BDDABAB00FA3943 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACA1BDDABAB00FA3943 /* ErrorView.swift */; };
+		0C144ACE1BDDB29F00FA3943 /* KSIRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACD1BDDB29F00FA3943 /* KSIRingView.m */; };
+		0C144AD01BDDB2F100FA3943 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */; };
 		0C944A671BDC969B00486907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C944A661BDC969B00486907 /* Assets.xcassets */; };
 		0CE71D021BDD6111002077C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71CFF1BDD6111002077C1 /* AppDelegate.swift */; };
 		0CE71D031BDD6111002077C1 /* ArchillectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D001BDD6111002077C1 /* ArchillectController.swift */; };
@@ -30,6 +32,9 @@
 		0C144AC51BDDA2DF00FA3943 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		0C144AC81BDDA3CD00FA3943 /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceCodePro-Regular.ttf"; sourceTree = "<group>"; };
 		0C144ACA1BDDABAB00FA3943 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		0C144ACC1BDDB29F00FA3943 /* KSIRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSIRingView.h; sourceTree = "<group>"; };
+		0C144ACD1BDDB29F00FA3943 /* KSIRingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSIRingView.m; sourceTree = "<group>"; };
+		0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		0C944A5C1BDC969B00486907 /* archillect.tv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = archillect.tv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C944A661BDC969B00486907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C944A681BDC969B00486907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +62,8 @@
 			isa = PBXGroup;
 			children = (
 				0C144ABC1BDD8B8C00FA3943 /* ArchillectTV-Bridging-Header.h */,
+				0C144ACC1BDDB29F00FA3943 /* KSIRingView.h */,
+				0C144ACD1BDDB29F00FA3943 /* KSIRingView.m */,
 				0C144ABD1BDD8B8D00FA3943 /* UIImage+animatedGIF.h */,
 				0C144ABE1BDD8B8D00FA3943 /* UIImage+animatedGIF.m */,
 			);
@@ -96,6 +103,7 @@
 				0CE71D061BDD6137002077C1 /* ArchillectAsset.swift */,
 				0CE71D001BDD6111002077C1 /* ArchillectController.swift */,
 				0C144ACA1BDDABAB00FA3943 /* ErrorView.swift */,
+				0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */,
 				0CE71D0A1BDD7690002077C1 /* NSDataAdditions.swift */,
 				0CE71D0C1BDD789D002077C1 /* NSErrorAdditions.swift */,
 				0CE71D081BDD64E9002077C1 /* NSURLAdditions.swift */,
@@ -189,6 +197,8 @@
 			files = (
 				0CE71D041BDD6111002077C1 /* ViewController.swift in Sources */,
 				0CE71D0D1BDD789D002077C1 /* NSErrorAdditions.swift in Sources */,
+				0C144ACE1BDDB29F00FA3943 /* KSIRingView.m in Sources */,
+				0C144AD01BDDB2F100FA3943 /* LoadingView.swift in Sources */,
 				0CE71D021BDD6111002077C1 /* AppDelegate.swift in Sources */,
 				0CE71D0B1BDD7690002077C1 /* NSDataAdditions.swift in Sources */,
 				0CE71D031BDD6111002077C1 /* ArchillectController.swift in Sources */,

@@ -33,7 +33,7 @@ class ErrorView: UIView {
 
     required init?(coder aDecoder: NSCoder)
     {
-        super.init(coder: aDecoder)
+        fatalError("unsupported")
     }
     
     override func layoutSubviews()

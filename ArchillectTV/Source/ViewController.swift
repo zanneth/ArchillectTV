@@ -16,6 +16,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     private var _archillectLabel:       UILabel = UILabel()
     private var _indexLabel:            UILabel = UILabel()
     private var _errorView:             ErrorView?
+    private var _loadingView:           LoadingView?
     
     private static let kChromePadding: CGFloat = 50.0
     
@@ -44,6 +45,8 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         
         _archillectController.delegate = self
         _archillectController.connect()
+        
+        _setLoadingScreenVisible(true)
     }
     
     override func viewDidAppear(animated: Bool)
@@ -72,6 +75,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         _backgroundImageView.frame = bounds
         _foregroundImageView.frame = bounds
         _errorView?.frame = bounds
+        _loadingView?.frame = bounds
         
         let archillectLabelSize = _archillectLabel.sizeThatFits(bounds.size)
         let archillectLabelFrame = CGRect(
@@ -116,6 +120,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
                     self._backgroundImageView.image = image
                     self._foregroundImageView.image = image
                     self._indexLabel.text = "#\(asset.index)"
+                    self._setLoadingScreenVisible(false)
                     self.view.setNeedsLayout()
                 })
             } else {
@@ -133,10 +138,34 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         }
         
         _errorView?.hidden = !visible
+        _loadingView?.hidden = visible
         _archillectLabel.hidden = visible
         _indexLabel.hidden = visible
         _backgroundImageView.hidden = visible
         _foregroundImageView.hidden = visible
+        
+        self.view.setNeedsLayout()
+    }
+    
+    internal func _setLoadingScreenVisible(visible: Bool)
+    {
+        if (visible && _loadingView == nil) {
+            _loadingView = LoadingView(frame: CGRectZero)
+            self.view.addSubview(_loadingView!)
+        }
+        
+        _loadingView?.hidden = !visible
+        _errorView?.hidden = visible
+        _archillectLabel.hidden = visible
+        _indexLabel.hidden = visible
+        _backgroundImageView.hidden = visible
+        _foregroundImageView.hidden = visible
+        
+        if (visible) {
+            _loadingView?.beginAnimating()
+        } else {
+            _loadingView?.stopAnimating()
+        }
         
         self.view.setNeedsLayout()
     }
