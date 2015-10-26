@@ -15,6 +15,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     private var _foregroundImageView:   UIImageView = UIImageView()
     private var _archillectLabel:       UILabel = UILabel()
     private var _indexLabel:            UILabel = UILabel()
+    private var _errorView:             ErrorView?
     
     private static let kChromePadding: CGFloat = 50.0
     
@@ -70,6 +71,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         let bounds = self.view.bounds
         _backgroundImageView.frame = bounds
         _foregroundImageView.frame = bounds
+        _errorView?.frame = bounds
         
         let archillectLabelSize = _archillectLabel.sizeThatFits(bounds.size)
         let archillectLabelFrame = CGRect(
@@ -100,6 +102,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError)
     {
         NSLog("Failed to load: \(error)")
+        _setErrorScreenVisible(true)
     }
     
     // MARK: Internal
@@ -120,5 +123,21 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
             }
         })
         loadTask?.resume()
+    }
+    
+    internal func _setErrorScreenVisible(visible: Bool)
+    {
+        if (visible && _errorView == nil) {
+            _errorView = ErrorView(frame: CGRectZero)
+            self.view.addSubview(_errorView!)
+        }
+        
+        _errorView?.hidden = !visible
+        _archillectLabel.hidden = visible
+        _indexLabel.hidden = visible
+        _backgroundImageView.hidden = visible
+        _foregroundImageView.hidden = visible
+        
+        self.view.setNeedsLayout()
     }
 }
