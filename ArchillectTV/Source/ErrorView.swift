@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 class ErrorView: UIView {
-    private var _errorImageView:        UIImageView = UIImageView()
-    private var _errorTitleLabel:       UILabel = UILabel()
-    private var _errorDescriptionLabel: UILabel = UILabel()
+    fileprivate var _errorImageView:        UIImageView = UIImageView()
+    fileprivate var _errorTitleLabel:       UILabel = UILabel()
+    fileprivate var _errorDescriptionLabel: UILabel = UILabel()
     
     override init(frame: CGRect)
     {
@@ -20,14 +20,14 @@ class ErrorView: UIView {
         _errorImageView.image = UIImage(named: "error_symbol")
         self.addSubview(_errorImageView)
         
-        _errorTitleLabel.font = UIFont.boldSystemFontOfSize(72.0)
+        _errorTitleLabel.font = UIFont.boldSystemFont(ofSize: 72.0)
         _errorTitleLabel.text = "失敗"
-        _errorTitleLabel.textColor = UIColor.redColor()
+        _errorTitleLabel.textColor = UIColor.red
         self.addSubview(_errorTitleLabel)
         
         _errorDescriptionLabel.font = UIFont(name: "Montserrat-Regular", size: 24.0)
         _errorDescriptionLabel.text = "Error loading assets from Archillect server."
-        _errorDescriptionLabel.textColor = UIColor.whiteColor()
+        _errorDescriptionLabel.textColor = UIColor.white
         self.addSubview(_errorDescriptionLabel)
     }
 
@@ -62,7 +62,7 @@ class ErrorView: UIView {
         
         let titleLabelFrame = CGRect(
             x: rint(imageTitleBounds.origin.x + (imageTitleBounds.size.width / 2.0 - titleLabelSize.width / 2.0)),
-            y: CGRectGetMaxY(imageViewFrame) + titleLabelMargin,
+            y: imageViewFrame.maxY + titleLabelMargin,
             width: titleLabelSize.width,
             height: titleLabelSize.height
         )
@@ -71,7 +71,7 @@ class ErrorView: UIView {
         let errorDescriptionLabelSize = _errorDescriptionLabel.sizeThatFits(bounds.size)
         let errorDescriptionLabelFrame = CGRect(
             x: rint(bounds.size.width / 2.0 - errorDescriptionLabelSize.width / 2.0),
-            y: rint(CGRectGetMaxY(titleLabelFrame) + (titleLabelMargin * 2.0)),
+            y: rint(titleLabelFrame.maxY + (titleLabelMargin * 2.0)),
             width: errorDescriptionLabelSize.width,
             height: errorDescriptionLabelSize.height
         )

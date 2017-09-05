@@ -8,52 +8,48 @@
 import Foundation
 
 protocol ArchillectControllerDelegate {
-    func archillectControllerDidConnect(controller: ArchillectController)
-    func archillectControllerDidReceiveNewAsset(controller: ArchillectController, asset: ArchillectAsset)
-    func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError)
+    func archillectControllerDidConnect(_ controller: ArchillectController)
+    func archillectControllerDidReceiveNewAsset(_ controller: ArchillectController, asset: ArchillectAsset)
+    func archillectControllerDidFailToLoad(_ controller: ArchillectController, error: ArchillectError)
 }
 
 extension ArchillectControllerDelegate {
-    func archillectControllerDidConnect(controller: ArchillectController) {}
-    func archillectControllerDidReceiveNewAsset(controller: ArchillectController, asset: ArchillectAsset) {}
-    func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError) {}
+    func archillectControllerDidConnect(_ controller: ArchillectController) {}
+    func archillectControllerDidReceiveNewAsset(_ controller: ArchillectController, asset: ArchillectAsset) {}
+    func archillectControllerDidFailToLoad(_ controller: ArchillectController, error: ArchillectError) {}
 }
 
 class ArchillectController {
     var delegate: ArchillectControllerDelegate?
     
-    private var _urlSession:    NSURLSession
-    private var _serverSession: ArchillectSession?
-    private var _retryCount:    UInt
+    fileprivate var _urlSession:    URLSession
+    fileprivate var _serverSession: ArchillectSession?
+    fileprivate var _retryCount:    UInt
     
-    static private let maxRetryCount: UInt = 5
+    static fileprivate let maxRetryCount: UInt = 5
     
     init()
     {
-        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 25.0
         
-        _urlSession = NSURLSession(configuration: config)
+        _urlSession = URLSession(configuration: config)
         _retryCount = 0
     }
     
     func connect()
     {
         if (_serverSession == nil) {
-            _fetchNewSession({ (session: ArchillectSession?, error: NSError?) -> Void in
+            _fetchNewSession({ (session: ArchillectSession?, error: ArchillectError?) -> Void in
                 if (session != nil && session!.isValid()) {
-                    NSLog("Began session: \(session)")
                     self._serverSession = session
                     self.delegate?.archillectControllerDidConnect(self)
                     
                     self._beginPollingForUpdates()
-                } else if (error != nil) {
-                    NSLog("Connection error: \(error)")
-                    self.delegate?.archillectControllerDidFailToLoad(self, error: error!)
+                } else if let error = error {
+                    self.delegate?.archillectControllerDidFailToLoad(self, error: error)
                 } else {
-                    NSLog("Session invalid. (\(session))")
-                    let clientError = NSError.archillectError(.InvalidSession)
-                    self.delegate?.archillectControllerDidFailToLoad(self, error: clientError)
+                    self.delegate?.archillectControllerDidFailToLoad(self, error: ArchillectError(.unknown))
                 }
             })
         }
@@ -66,16 +62,16 @@ class ArchillectController {
     
     // MARK: Internal
     
-    internal func _archillectTVURL(requestParams: [String : String]) -> NSURL?
+    internal func _archillectTVURL(_ requestParams: [String : String]) -> URL?
     {
-        let baseURL = NSURL(string: "http://archillect.com")
-        let tvSocketURL = baseURL!.URLByAppendingPathComponent("socket.io/")
+        let baseURL = URL(string: "http://archillect.com")
+        let tvSocketURL = baseURL!.appendingPathComponent("socket.io/")
         return tvSocketURL.URLByAppendingRequestParameters(requestParams)
     }
     
     internal func _archillectStandardRequestParams() -> [String : String]
     {
-        let date = NSDate()
+        let date = Date()
         let timeString = "\(Int(date.timeIntervalSince1970))"
         let params: [String : String] = [
             "EIO" : "3",
@@ -85,37 +81,37 @@ class ArchillectController {
         return params
     }
     
-    internal func _fetchNewSession(completion: (ArchillectSession?, NSError?) -> Void)
+    internal func _fetchNewSession(_ completion: @escaping (ArchillectSession?, ArchillectError?) -> Void)
     {
         let params = _archillectStandardRequestParams()
         let connectURL = _archillectTVURL(params)
-        let task = _urlSession.dataTaskWithURL(connectURL!) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        let task = _urlSession.dataTask(with: connectURL!, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
             var session: ArchillectSession? = nil
-            var clientError: NSError? = nil
+            var clientError: ArchillectError? = nil
             
-            if (data != nil) {
-                session = ArchillectSession(data!)
+            if let data = data {
+                session = ArchillectSession(data)
             }
             
             if (error != nil) {
-                clientError = NSError.archillectError(.ConnectionError, underlying: error)
+                clientError = ArchillectError(.connectionError)
             }
             
             completion(session, clientError)
-        }
+        })
         task.resume()
     }
     
-    internal func _startPollRequest(completion: (ArchillectAsset?, NSError?) -> Void)
+    internal func _startPollRequest(_ completion: @escaping (ArchillectAsset?, ArchillectError?) -> Void)
     {
         if (_serverSession != nil) {
             var params = _archillectStandardRequestParams()
             params["sid"] = _serverSession!.sessionID
             
             let url = _archillectTVURL(params)
-            let task = _urlSession.dataTaskWithURL(url!, completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            let task = _urlSession.dataTask(with: url!, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) -> Void in
                 var asset: ArchillectAsset? = nil
-                var clientError: NSError? = nil
+                var clientError: ArchillectError? = nil
                 
                 if (data != nil) {
                     // check if we got an error response first
@@ -123,45 +119,43 @@ class ArchillectController {
                     if (errorResponse.code == 0) {
                         asset = ArchillectAsset(data!)
                     } else {
-                        let userInfo = ["code" : errorResponse.code, "message" : errorResponse.message]
-                        var errorCode: ArchillectErrorCode
+                        var errorCode: ArchillectError.ErrorCode
                         if (errorResponse.code == 1) { // invalid session
-                            errorCode = .InvalidSession
+                            errorCode = .invalidSession
                         } else {
-                            errorCode = .ServerError
+                            errorCode = .serverError
                         }
                         
-                        clientError = NSError.archillectError(errorCode, userInfo: userInfo as [NSObject : AnyObject])
+                        clientError = ArchillectError(errorCode)
                     }
                 }
                 
-                if (error != nil && clientError == nil) {
-                    clientError = NSError.archillectError(.ConnectionError, underlying: error)
+                if (error != nil) {
+                    clientError = ArchillectError(.connectionError)
                 }
                 
                 completion(asset, clientError)
             })
             task.resume()
         } else {
-            let error = NSError.archillectError(.InvalidSession)
+            let error = ArchillectError(.invalidSession)
             completion(nil, error)
         }
     }
     
     internal func _beginPollingForUpdates()
     {
-        _startPollRequest({ (asset: ArchillectAsset?, error: NSError?) -> Void in
+        _startPollRequest({ (asset: ArchillectAsset?, error: ArchillectError?) -> Void in
             if (asset != nil) {
-                if (asset!.type != .Unknown) {
+                if (asset!.type != .unknown) {
                     self.delegate?.archillectControllerDidReceiveNewAsset(self, asset: asset!)
                 }
                 
                 self._beginPollingForUpdates()
             } else {
-                NSLog("Error fetching update: \(error)")
+                NSLog("Error fetching update: \(error ?? ArchillectError(.unknown))")
                 
-                let archillectError = ArchillectErrorCode(rawValue: error!.code)!
-                if (archillectError == .InvalidSession) {
+                if (error?.code == .invalidSession) {
                     // recoverable--reload session
                     self._serverSession = nil
                     self.connect()
@@ -183,23 +177,23 @@ class ArchillectController {
 internal struct ArchillectSession {
     var sessionID:      String          = ""
     var upgrades:       [String]        = []
-    var pingInterval:   NSTimeInterval  = 0.0
-    var pingTimeout:    NSTimeInterval  = 0.0
+    var pingInterval:   TimeInterval  = 0.0
+    var pingTimeout:    TimeInterval  = 0.0
     
     init()
     {}
     
-    init(_ responseData: NSData)
+    init(_ responseData: Data)
     {
         let jsonData = responseData.jsonDataByTrimmingBytes()
-        if let dict = (try? NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions())) as? NSDictionary {
+        if let dict = (try? JSONSerialization.jsonObject(with: jsonData!, options: JSONSerialization.ReadingOptions())) as? NSDictionary {
             if let sessionID = dict["sid"] as? NSString {
                 self.sessionID = String(sessionID)
             }
             
             if let upgrades = dict["upgrades"] as? NSArray {
                 for u in upgrades {
-                    self.upgrades.append(String(u))
+                    self.upgrades.append(String(describing: u))
                 }
             }
             
@@ -226,12 +220,12 @@ internal struct ArchillectErrorResponse {
     init()
     {}
     
-    init(_ responseData: NSData)
+    init(_ responseData: Data)
     {
         let jsonData = responseData.jsonDataByTrimmingBytes()
-        if let dict = (try? NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions())) as? NSDictionary {
+        if let dict = (try? JSONSerialization.jsonObject(with: jsonData!, options: JSONSerialization.ReadingOptions())) as? NSDictionary {
             if let code = dict["code"] as? NSNumber {
-                self.code = code.unsignedIntegerValue
+                self.code = code.uintValue
             }
             
             if let message = dict["message"] as? NSString {

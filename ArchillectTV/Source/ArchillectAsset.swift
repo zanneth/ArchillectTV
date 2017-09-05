@@ -8,41 +8,41 @@
 import Foundation
 
 struct ArchillectAsset {
-    enum Type {
-        case Unknown
-        case GIF
+    enum AssetType {
+        case unknown
+        case gif
     }
     
-    var type:   Type    = .Unknown
-    var url:    NSURL   = NSURL()
-    var index:  UInt    = 0
+    var type:   AssetType   = .unknown
+    var url:    URL?
+    var index:  UInt        = 0
     
     init()
     {}
     
-    init(_ responseData: NSData)
+    init(_ responseData: Data)
     {
         let jsonData = responseData.jsonDataByTrimmingBytes()
-        if let objs = (try? NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions())) as? NSArray {
+        if let objs = (try? JSONSerialization.jsonObject(with: jsonData!, options: JSONSerialization.ReadingOptions())) as? NSArray {
             if (objs.count >= 2) {
                 // first object is the type. second object is our payload
                 if let typeStr = objs[0] as? NSString {
                     switch (typeStr) {
                     case "gif":
-                        self.type = .GIF
+                        self.type = .gif
                     default:
-                        self.type = .Unknown
+                        self.type = .unknown
                     }
                 }
                 
                 if let dict = objs[1] as? NSDictionary {
                     if let indexNum = dict["index"] as? NSNumber {
-                        self.index = indexNum.unsignedIntegerValue
+                        self.index = indexNum.uintValue
                     }
                     
                     var assetKey: String? = nil
                     switch (self.type) {
-                    case .GIF:
+                    case .gif:
                         assetKey = "gif"
                     default:
                         assetKey = nil
@@ -50,7 +50,7 @@ struct ArchillectAsset {
                     
                     if (assetKey != nil) {
                         if let assetURLString = dict[assetKey!] as? NSString {
-                            self.url = NSURL(string: assetURLString as String)!
+                            self.url = URL(string: assetURLString as String)!
                         }
                     }
                 }

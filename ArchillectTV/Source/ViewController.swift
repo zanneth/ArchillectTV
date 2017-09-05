@@ -8,40 +8,40 @@
 import UIKit
 
 class ViewController: UIViewController, ArchillectControllerDelegate {
-    private var _archillectController:  ArchillectController = ArchillectController()
-    private var _urlSession:            NSURLSession?
+    fileprivate var _archillectController:  ArchillectController = ArchillectController()
+    fileprivate var _urlSession:            URLSession?
     
-    private var _backgroundImageView:   UIImageView = UIImageView()
-    private var _foregroundImageView:   UIImageView = UIImageView()
-    private var _archillectLabel:       UILabel = UILabel()
-    private var _indexLabel:            UILabel = UILabel()
-    private var _errorView:             ErrorView?
-    private var _loadingView:           LoadingView?
+    fileprivate var _backgroundImageView:   UIImageView = UIImageView()
+    fileprivate var _foregroundImageView:   UIImageView = UIImageView()
+    fileprivate var _archillectLabel:       UILabel = UILabel()
+    fileprivate var _indexLabel:            UILabel = UILabel()
+    fileprivate var _errorView:             ErrorView?
+    fileprivate var _loadingView:           LoadingView?
     
-    private static let kChromePadding: CGFloat = 50.0
+    fileprivate static let kChromePadding: CGFloat = 50.0
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.blackColor()
+        self.view.backgroundColor = UIColor.black
         
-        _backgroundImageView.contentMode = .ScaleAspectFill
+        _backgroundImageView.contentMode = .scaleAspectFill
         self.view.addSubview(_backgroundImageView)
         
-        _foregroundImageView.contentMode = .ScaleAspectFit
+        _foregroundImageView.contentMode = .scaleAspectFit
         self.view.addSubview(_foregroundImageView)
         
         _archillectLabel.text = "ARCHILLECT"
-        _archillectLabel.textColor = UIColor.whiteColor()
+        _archillectLabel.textColor = UIColor.white
         _archillectLabel.font = UIFont(name: "Montserrat-Bold", size: 26.0)
         self.view.addSubview(_archillectLabel)
         
-        _indexLabel.textColor = UIColor.whiteColor()
+        _indexLabel.textColor = UIColor.white
         _indexLabel.font = UIFont(name: "SourceCodePro-Regular", size: 18.0)
         self.view.addSubview(_indexLabel)
         
-        _urlSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        _urlSession = URLSession(configuration: URLSessionConfiguration.default)
         
         _archillectController.delegate = self
         _archillectController.connect()
@@ -49,20 +49,20 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         _setLoadingScreenVisible(true)
     }
     
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
         
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
         _backgroundImageView.startAnimating()
         _foregroundImageView.startAnimating()
     }
     
-    override func viewDidDisappear(animated: Bool)
+    override func viewDidDisappear(_ animated: Bool)
     {
         super.viewDidDisappear(animated)
         
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
         _backgroundImageView.stopAnimating()
         _foregroundImageView.stopAnimating()
     }
@@ -88,7 +88,7 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
         
         let indexLabelSize = _indexLabel.sizeThatFits(bounds.size)
         let indexLabelFrame = CGRect(
-            x: CGRectGetMaxX(archillectLabelFrame) + 10.0,
+            x: archillectLabelFrame.maxX + 10.0,
             y: rint(archillectLabelFrame.origin.y + archillectLabelSize.height / 2.0 - indexLabelSize.height / 2.0),
             width: indexLabelSize.width,
             height: indexLabelSize.height
@@ -98,28 +98,30 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
     
     // MARK: ArchillectControllerDelegate
     
-    func archillectControllerDidReceiveNewAsset(controller: ArchillectController, asset: ArchillectAsset)
+    func archillectControllerDidReceiveNewAsset(_ controller: ArchillectController, asset: ArchillectAsset)
     {
         _reloadImageViewsWithAsset(asset)
     }
     
-    func archillectControllerDidFailToLoad(controller: ArchillectController, error: NSError)
+    func archillectControllerDidFailToLoad(_ controller: ArchillectController, error: ArchillectError)
     {
         NSLog("Failed to load: \(error)")
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             self._setErrorScreenVisible(true)
         })
     }
     
     // MARK: Internal
     
-    internal func _reloadImageViewsWithAsset(asset: ArchillectAsset)
+    internal func _reloadImageViewsWithAsset(_ asset: ArchillectAsset)
     {
-        let loadTask = _urlSession?.dataTaskWithURL(asset.url, completionHandler: { (imageData: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+        guard let url = asset.url else { return }
+        
+        let loadTask = _urlSession?.dataTask(with: url, completionHandler: { (imageData: Data?, response: URLResponse?, error: Error?) -> Void in
             if (imageData != nil) {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let image = UIImage.animatedImageWithAnimatedGIFData(imageData!)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    let image = UIImage.animatedImage(withAnimatedGIFData: imageData!)
                     self._backgroundImageView.image = image
                     self._foregroundImageView.image = image
                     self._indexLabel.text = "#\(asset.index)"
@@ -127,42 +129,42 @@ class ViewController: UIViewController, ArchillectControllerDelegate {
                     self.view.setNeedsLayout()
                 })
             } else {
-                NSLog("Error loading asset \(asset). \(error)")
+                NSLog("Error loading asset \(asset). \(error ?? ArchillectError(.unknown))")
             }
         })
         loadTask?.resume()
     }
     
-    internal func _setErrorScreenVisible(visible: Bool)
+    internal func _setErrorScreenVisible(_ visible: Bool)
     {
         if (visible && _errorView == nil) {
-            _errorView = ErrorView(frame: CGRectZero)
+            _errorView = ErrorView(frame: CGRect.zero)
             self.view.addSubview(_errorView!)
         }
         
-        _errorView?.hidden = !visible
-        _loadingView?.hidden = visible
-        _archillectLabel.hidden = visible
-        _indexLabel.hidden = visible
-        _backgroundImageView.hidden = visible
-        _foregroundImageView.hidden = visible
+        _errorView?.isHidden = !visible
+        _loadingView?.isHidden = visible
+        _archillectLabel.isHidden = visible
+        _indexLabel.isHidden = visible
+        _backgroundImageView.isHidden = visible
+        _foregroundImageView.isHidden = visible
         
         self.view.setNeedsLayout()
     }
     
-    internal func _setLoadingScreenVisible(visible: Bool)
+    internal func _setLoadingScreenVisible(_ visible: Bool)
     {
         if (visible && _loadingView == nil) {
-            _loadingView = LoadingView(frame: CGRectZero)
+            _loadingView = LoadingView(frame: CGRect.zero)
             self.view.addSubview(_loadingView!)
         }
         
-        _loadingView?.hidden = !visible
-        _errorView?.hidden = visible
-        _archillectLabel.hidden = visible
-        _indexLabel.hidden = visible
-        _backgroundImageView.hidden = visible
-        _foregroundImageView.hidden = visible
+        _loadingView?.isHidden = !visible
+        _errorView?.isHidden = visible
+        _archillectLabel.isHidden = visible
+        _indexLabel.isHidden = visible
+        _backgroundImageView.isHidden = visible
+        _foregroundImageView.isHidden = visible
         
         if (visible) {
             _loadingView?.beginAnimating()

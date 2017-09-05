@@ -14,6 +14,7 @@
 		0C144ACB1BDDABAB00FA3943 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACA1BDDABAB00FA3943 /* ErrorView.swift */; };
 		0C144ACE1BDDB29F00FA3943 /* KSIRingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACD1BDDB29F00FA3943 /* KSIRingView.m */; };
 		0C144AD01BDDB2F100FA3943 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */; };
+		0C3FC8181F5E523000031AFB /* ArchillectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3FC8171F5E523000031AFB /* ArchillectError.swift */; };
 		0C944A671BDC969B00486907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C944A661BDC969B00486907 /* Assets.xcassets */; };
 		0CE71D021BDD6111002077C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71CFF1BDD6111002077C1 /* AppDelegate.swift */; };
 		0CE71D031BDD6111002077C1 /* ArchillectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D001BDD6111002077C1 /* ArchillectController.swift */; };
@@ -21,7 +22,6 @@
 		0CE71D071BDD6137002077C1 /* ArchillectAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D061BDD6137002077C1 /* ArchillectAsset.swift */; };
 		0CE71D091BDD64E9002077C1 /* NSURLAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D081BDD64E9002077C1 /* NSURLAdditions.swift */; };
 		0CE71D0B1BDD7690002077C1 /* NSDataAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D0A1BDD7690002077C1 /* NSDataAdditions.swift */; };
-		0CE71D0D1BDD789D002077C1 /* NSErrorAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE71D0C1BDD789D002077C1 /* NSErrorAdditions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +35,7 @@
 		0C144ACC1BDDB29F00FA3943 /* KSIRingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSIRingView.h; sourceTree = "<group>"; };
 		0C144ACD1BDDB29F00FA3943 /* KSIRingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSIRingView.m; sourceTree = "<group>"; };
 		0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		0C3FC8171F5E523000031AFB /* ArchillectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchillectError.swift; sourceTree = "<group>"; };
 		0C944A5C1BDC969B00486907 /* archillect.tv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = archillect.tv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C944A661BDC969B00486907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C944A681BDC969B00486907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,7 +45,6 @@
 		0CE71D061BDD6137002077C1 /* ArchillectAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArchillectAsset.swift; sourceTree = "<group>"; };
 		0CE71D081BDD64E9002077C1 /* NSURLAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLAdditions.swift; sourceTree = "<group>"; };
 		0CE71D0A1BDD7690002077C1 /* NSDataAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDataAdditions.swift; sourceTree = "<group>"; };
-		0CE71D0C1BDD789D002077C1 /* NSErrorAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorAdditions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +102,10 @@
 				0CE71CFF1BDD6111002077C1 /* AppDelegate.swift */,
 				0CE71D061BDD6137002077C1 /* ArchillectAsset.swift */,
 				0CE71D001BDD6111002077C1 /* ArchillectController.swift */,
+				0C3FC8171F5E523000031AFB /* ArchillectError.swift */,
 				0C144ACA1BDDABAB00FA3943 /* ErrorView.swift */,
 				0C144ACF1BDDB2F100FA3943 /* LoadingView.swift */,
 				0CE71D0A1BDD7690002077C1 /* NSDataAdditions.swift */,
-				0CE71D0C1BDD789D002077C1 /* NSErrorAdditions.swift */,
 				0CE71D081BDD64E9002077C1 /* NSURLAdditions.swift */,
 				0CE71D011BDD6111002077C1 /* ViewController.swift */,
 			);
@@ -155,6 +155,8 @@
 				TargetAttributes = {
 					0C944A5B1BDC969B00486907 = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = F7W5R35V7L;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -195,8 +197,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C3FC8181F5E523000031AFB /* ArchillectError.swift in Sources */,
 				0CE71D041BDD6111002077C1 /* ViewController.swift in Sources */,
-				0CE71D0D1BDD789D002077C1 /* NSErrorAdditions.swift in Sources */,
 				0C144ACE1BDDB29F00FA3943 /* KSIRingView.m in Sources */,
 				0C144AD01BDDB2F100FA3943 /* LoadingView.swift in Sources */,
 				0CE71D021BDD6111002077C1 /* AppDelegate.swift in Sources */,
@@ -297,12 +299,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = F7W5R35V7L;
 				INFOPLIST_FILE = ArchillectTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zanneth.ArchillectTV;
 				PRODUCT_NAME = archillect.tv;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArchillectTV/External/ArchillectTV-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -312,11 +319,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = F7W5R35V7L;
 				INFOPLIST_FILE = ArchillectTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zanneth.ArchillectTV;
 				PRODUCT_NAME = archillect.tv;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArchillectTV/External/ArchillectTV-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -7,14 +7,14 @@
 
 import Foundation
 
-extension NSData {
-    func jsonDataByTrimmingBytes() -> NSData?
+extension Data {
+    func jsonDataByTrimmingBytes() -> Data?
     {
-        let bytesPtr = UnsafePointer<UInt8>(self.bytes)
-        let bytesBuf = UnsafeBufferPointer(start: bytesPtr, count: self.length)
+        let bytesPtr = (self as NSData).bytes.bindMemory(to: UInt8.self, capacity: self.count)
+        let bytesBuf = UnsafeBufferPointer(start: bytesPtr, count: self.count)
         var jsonPayloadBeginIdx = 0
         
-        for (idx, byte) in bytesBuf.enumerate() {
+        for (idx, byte) in bytesBuf.enumerated() {
             let chr = Character(UnicodeScalar(byte))
             
             if (chr == Character("{") || chr == Character("[")) {
@@ -23,6 +23,6 @@ extension NSData {
             }
         }
         
-        return NSData(bytes: bytesBuf.baseAddress + jsonPayloadBeginIdx, length: self.length - jsonPayloadBeginIdx)
+        return Data(bytes: UnsafePointer<UInt8>(bytesBuf.baseAddress! + jsonPayloadBeginIdx), count: self.count - jsonPayloadBeginIdx)
     }
 }

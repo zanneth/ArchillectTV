@@ -9,42 +9,42 @@ import Darwin
 import Foundation
 import UIKit
 
-let π = CGFloat(M_PI)
+let π = CGFloat.pi
 
 class LoadingView: UIView {
-    private var _outerRingView:  KSIRingView = KSIRingView()
-    private var _middleRingView: KSIRingView = KSIRingView()
-    private var _innerRingView:  KSIRingView = KSIRingView()
-    private var _loadingLabel:   UILabel = UILabel()
+    fileprivate var _outerRingView:  KSIRingView = KSIRingView()
+    fileprivate var _middleRingView: KSIRingView = KSIRingView()
+    fileprivate var _innerRingView:  KSIRingView = KSIRingView()
+    fileprivate var _loadingLabel:   UILabel = UILabel()
     
     override init(frame: CGRect)
     {
         super.init(frame: frame)
         
         let segmentsWidth: CGFloat = 20.0
-        let ringsColor = UIColor.whiteColor()
+        let ringsColor = UIColor.white
         
         let outerPattern = KSIMutableRingPattern(color: ringsColor, segmentLength: π/2.0, segmentsCount: 2)
-        outerPattern.segmentIntervalRadians = π
-        outerPattern.segmentWidth = segmentsWidth
+        outerPattern?.segmentIntervalRadians = π
+        outerPattern?.segmentWidth = segmentsWidth
         _outerRingView.addRingPattern(outerPattern)
-        _outerRingView.backgroundColor = UIColor.clearColor()
+        _outerRingView.backgroundColor = UIColor.clear
         
         let middlePattern = KSIMutableRingPattern(color: ringsColor, segmentLength: π/4.5, segmentsCount: 4)
-        middlePattern.segmentIntervalRadians = π/2.0
-        middlePattern.segmentWidth = segmentsWidth
+        middlePattern?.segmentIntervalRadians = π/2.0
+        middlePattern?.segmentWidth = segmentsWidth
         _middleRingView.addRingPattern(middlePattern)
-        _middleRingView.backgroundColor = UIColor.clearColor()
+        _middleRingView.backgroundColor = UIColor.clear
         
         let innerPattern = KSIMutableRingPattern(color: ringsColor, segmentLength: π/3.0, segmentsCount: 3)
-        innerPattern.segmentIntervalRadians = π/1.5
-        innerPattern.segmentWidth = segmentsWidth
+        innerPattern?.segmentIntervalRadians = π/1.5
+        innerPattern?.segmentWidth = segmentsWidth
         _innerRingView.addRingPattern(innerPattern)
-        _innerRingView.backgroundColor = UIColor.clearColor()
+        _innerRingView.backgroundColor = UIColor.clear
         
         _loadingLabel.font = UIFont(name: "Montserrat-Bold", size: 52.0)
         _loadingLabel.text = "LOADING..."
-        _loadingLabel.textColor = UIColor.whiteColor()
+        _loadingLabel.textColor = UIColor.white
         
         self.addSubview(_outerRingView)
         self.addSubview(_middleRingView)
@@ -103,7 +103,7 @@ class LoadingView: UIView {
     
     func beginAnimating()
     {
-        let duration: NSTimeInterval = 20.0
+        let duration: TimeInterval = 20.0
         
         let clockwiseAnim = CABasicAnimation(keyPath: "transform.rotation")
         clockwiseAnim.fromValue = 0.0
@@ -117,9 +117,9 @@ class LoadingView: UIView {
         counterClockwiseAnim.duration = duration
         counterClockwiseAnim.repeatCount = Float.infinity
         
-        _outerRingView.layer.addAnimation(clockwiseAnim, forKey: "")
-        _middleRingView.layer.addAnimation(counterClockwiseAnim, forKey: "")
-        _innerRingView.layer.addAnimation(clockwiseAnim, forKey: "")
+        _outerRingView.layer.add(clockwiseAnim, forKey: "")
+        _middleRingView.layer.add(counterClockwiseAnim, forKey: "")
+        _innerRingView.layer.add(clockwiseAnim, forKey: "")
     }
     
     func stopAnimating()
